@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="action">app.preferences</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Open Folder</attribute>
+        <attribute name="action">app.open-folder</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+        <attribute name="action">win.show-help-overlay</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_About Wienere</attribute>
+        <attribute name="action">app.about</attribute>
+      </item>
+    </section>
+  </menu>
+  <template class="WienereWindow" parent="AdwApplicationWindow">
+    <property name="title" translatable="yes">Wienere</property>
+    <property name="default-width">360</property>
+    <property name="default-height">600</property>
+    <property name="content">
+
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <child type="title">
+              <object class="GtkDropDown" id="chat_selector">
+                <property name="model">
+                  <object class="GtkStringList" id="chat_list">
+                    <items>
+                    </items>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child type="start">
+              <object class="GtkButton" id="clear_button">
+                <property name="icon-name">edit-clear-all-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Reload</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkMenuButton">
+                <property name="primary">True</property>
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Main Menu</property>
+                <property name="menu-model">primary_menu</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <property name="content">
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkOverlay">
+                <child>
+                  <object class="AdwToastOverlay" id="toast_overlay">
+                    <child>
+                      <object class="AdwCarousel" id="message_carousel">
+                        <property name="vexpand">true</property>
+                        <property name="hexpand">true</property>
+                        <property name="allow-long-swipes">false</property>
+                        <property name="allow-scroll-wheel">true</property>
+                        <property name="orientation">vertical</property>
+                        </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="overlay">
+                  <object class="AdwCarouselIndicatorDots" id="carousel_indicator">
+                    <property name="carousel">message_carousel</property>
+                    <property name="orientation">vertical</property>
+                    <property name="valign">center</property>
+                    <property name="halign">end</property>
+                    <style>
+                      <class name="carousel-indicator-dots"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="panel_box">
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+                <property name="margin-bottom">6</property>
+                <property name="margin-start">6</property>
+                <property name="margin-end">6</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolled_window">
+                    <property name="hscrollbar-policy">automatic</property>
+                    <property name="vscrollbar-policy">never</property>
+                    <property name="propagate-natural-height">True</property>
+                    <property name="child">
+                      <object class="GtkViewport">
+                        <property name="overflow">visible</property>
+                        <property name="child">
+                          <object class="GtkBox" id="files_box">
+                            <property name="orientation">horizontal</property>
+                            <property name="spacing">6</property>
+                            <property name="hexpand">True</property>
+                          </object>
+                        </property>
+                      </object>
+                    </property>
+                  </object>
+
+                </child>
+                <child>
+                  <object class="GtkBox" id="input_box">
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="GtkButton" id="image_button">
+                        <property name="icon-name">x-office-drawing-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="attach_button">
+                        <property name="icon-name">mail-attachment-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="message_entry">
+                        <property name="hexpand">true</property>
+                        <property name="placeholder-text" translatable="yes">Type a message...</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="voice_button">
+                        <property name="icon-name">audio-input-microphone-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="send_button">
+                        <property name="icon-name">paper-plane-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>

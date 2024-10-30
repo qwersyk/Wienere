@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=wienere
+Exec=wienere
+Icon=io.github.qwersyk.Wienere
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;AI;Chatbot;
+StartupNotify=true
+DBusActivatable=true

@@ -1,0 +1,12 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/io.github.qwersyk.Wienere.desktop.in
+data/io.github.qwersyk.Wienere.metainfo.xml.in
+data/io.github.qwersyk.Wienere.gschema.xml
+src/main.py
+src/window.py
+src/window.ui
+src/widgets.py
+src/config.py
+src/tools.py
+src/managers.py

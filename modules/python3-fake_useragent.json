@@ -1,0 +1,14 @@
+{
+    "name": "python3-fake_useragent",
+    "buildsystem": "simple",
+    "build-commands": [
+        "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"fake_useragent\" --no-build-isolation"
+    ],
+    "sources": [
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/e4/99/60d8cf1b26938c2e0a57e232f7f15641dfcd6f8deda454d73e4145910ff6/fake_useragent-1.5.1-py3-none-any.whl",
+            "sha256": "57415096557c8a4e23b62a375c21c55af5fd4ba30549227f562d2c4f5b60e3b3"
+        }
+    ]
+}

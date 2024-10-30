@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.qwersyk.Wienere</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <name>Wienere</name>
+  <summary>Simple custom assisted chats</summary>
+  <description>
+    <p>A lightweight chatbot application for Linux built with GTK4 and libadwaita. Wienere allows you to create custom chat interfaces with Python execution capabilities and various AI provider integrations.</p>
+  </description>
+
+  <developer id="tld.vendor">
+    <name>Yehor Hliebov</name>
+  </developer>
+  <url type="homepage">https://github.com/qwersyk/wienere/</url>
+  <url type="bugtracker">https://github.com/qwersyk/wienere/issues</url>
+
+  <translation type="gettext">wienere</translation>
+  <launchable type="desktop-id">io.github.qwersyk.Wienere.desktop</launchable>
+  <content_rating type="oars-1.1" />
+
+  <branding>
+    <color type="primary" scheme_preference="light">#99c1f1</color>
+    <color type="primary" scheme_preference="dark">#003d81</color>
+  </branding>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/qwersyk/wienere/master/data/screenshots/screenshot1.png</image>
+      <caption>Chat example</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/qwersyk/wienere/master/data/screenshots/screenshot2.png</image>
+      <caption>Chat example</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/qwersyk/wienere/master/data/screenshots/screenshot3.png</image>
+      <caption>Chat example</caption>
+    </screenshot>
+  </screenshots>
+
+  <releases>
+    <release version="1.0.1" date="2024-01-18">
+      <url type="details">https://github.com/qwersyk/Wienere/releases/tag/0.1.0</url>
+      <description translate="no">
+        <p>First release</p>
+        <ul>
+          <li>Beginnings</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+
+</component>
