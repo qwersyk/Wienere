@@ -5,6 +5,7 @@ from gi.repository import Gdk
 from . import config
 from . import managers
 from . import widgets
+from .record import ScreenRecorder
 
 
 
@@ -111,11 +112,11 @@ class WienereWindow(Adw.ApplicationWindow):
             self.stop_current_execution()
             self.chat = managers.chatManagers.get(self.config.chats.get(chat_name)["type"])(chat_name)
             if type(self.chat) != managers.VisionChatManager:
-                for i in self.images:
-                    self.on_close_file_clicked(i)
+                while self.images:
+                    self.on_close_file_clicked(self.images[0])
             if type(self.chat) != managers.ToolChatManager:
-                for i in self.files:
-                    self.on_close_file_clicked(i)
+                while self.files:
+                    self.on_close_file_clicked(self.files[0])
             self.set_button()
         while self.message_carousel.get_n_pages() > 0:
             self.message_carousel.remove(self.message_carousel.get_nth_page(0))
@@ -142,10 +143,12 @@ class WienereWindow(Adw.ApplicationWindow):
 
             if type(self.chat) == managers.ToolChatManager:
                 widget = self.chat.send_message(message, self.files)
-                for file in self.files:
-                    self.on_close_file_clicked(file)
+                while self.files:
+                    self.on_close_file_clicked(self.files[0])
             if type(self.chat) == managers.VisionChatManager:
                 widget = self.chat.send_message(message, self.images)
+                while self.images:
+                    self.on_close_file_clicked(self.images[0])
             if type(self.chat) == managers.BaseChatManager:
                 widget = self.chat.send_message(message)
             self.new_page(widget)
@@ -188,6 +191,7 @@ class WienereWindow(Adw.ApplicationWindow):
         dialog.add_response("cancel", _("Cancel"))
         dialog.add_response("file", _("Choose a file"))
         dialog.add_response("url", _("Enter a URL"))
+        dialog.add_response("screen", _("Screen Record"))
         dialog.set_default_response("file")
         dialog.set_close_response("cancel")
         dialog.connect("response", self.on_image_dialog_response)
@@ -198,6 +202,9 @@ class WienereWindow(Adw.ApplicationWindow):
             self.on_path_dialog_response()
         elif response == "url":
             self.show_url_dialog()
+        elif response == "screen":
+            self.start_screen_recording()
+
         dialog.destroy()
 
     def on_path_dialog_response(self):
@@ -211,6 +218,11 @@ class WienereWindow(Adw.ApplicationWindow):
         filter_images.set_name("Images")
         filter_images.add_mime_type("image/*")
         dialog.add_filter(filter_images)
+
+        filter_video = Gtk.FileFilter()
+        filter_video.set_name("Video")
+        filter_video.add_mime_type("video/*")
+        dialog.add_filter(filter_video)
 
         dialog.connect("response", self.on_image_chosen)
         dialog.show()
@@ -232,7 +244,7 @@ class WienereWindow(Adw.ApplicationWindow):
         dialog.set_extra_child(url_entry)
 
         dialog.add_response("cancel", _("Cancel"))
-        dialog.add_response("ok", -("Ok"))
+        dialog.add_response("ok", _("Ok"))
         dialog.set_response_appearance("ok", Adw.ResponseAppearance.SUGGESTED)
         dialog.set_default_response("ok")
         dialog.set_close_response("cancel")
@@ -249,18 +261,15 @@ class WienereWindow(Adw.ApplicationWindow):
 
 
     def add_url_of_image(self, url):
-        if self.images:
-            self.images[0].change_file(url)
-        else:
-            widget = widgets.FileOnPanel(url, "image")
-            widget.connect("clicked", self.on_close_file_clicked)
-            self.images = [widget]
-            self.files_box.append(widget)
+        widget = widgets.FileOnPanel(url, "image")
+        widget.connect("clicked", self.on_close_file_clicked)
+        self.images.append(widget)
+        self.files_box.append(widget)
         return widget
 
     def on_close_file_clicked(self, widget):
         if widget in self.images:
-            self.images = []
+            self.images.remove(widget)
         if widget in self.files:
             self.files.remove(widget)
         if widget in self.files_box:
@@ -282,3 +291,29 @@ class WienereWindow(Adw.ApplicationWindow):
         scrolled_window.set_vexpand(True)
         self.message_carousel.append(scrolled_window)
         GLib.idle_add(self.message_carousel.scroll_to, scrolled_window, True)
+
+    def start_screen_recording(self):
+        recorder = ScreenRecorder(self, self.add_url_of_image)
+        if recorder.start():
+
+
+            dialog = Adw.MessageDialog.new(self)
+            dialog.set_modal(True)
+            dialog.set_heading("Screen Recording")
+
+
+            content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            content.set_margin_top(12)
+            content.set_margin_bottom(12)
+            content.set_margin_start(12)
+            content.set_margin_end(12)
+
+            status = Gtk.Label()
+            status.set_text("Click Stop to end recording")
+            content.append(status)
+
+            dialog.set_extra_child(content)
+
+            dialog.add_response("stop", "Stop")
+            dialog.connect("response", recorder.stop)
+            dialog.present()

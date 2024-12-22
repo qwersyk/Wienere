@@ -1104,9 +1104,62 @@ class MarkdownView(Gtk.Box):
         self.append(scrolled)
 
 
+
+class ToolThinking(Tool):
+    def __init__(self, name):
+        super().__init__(name)
+
+    def get_dependencies(self):
+        return ["thoughts_description"]
+
+    def get_widget(self, function_args) -> Adw.Bin:
+        return WidgetThinking(function_args.get("thoughts", "None"))
+
+    def get_parameters(self):
+        return {
+            "thoughts": {
+                "type": "string",
+                "description": self.config.tools.get(self.name).get("thoughts_description"),
+            },
+        }
+
+    def get_required(self):
+        return ["thoughts"]
+
+    def get_name(self):
+        return self.name
+
+
+class WidgetThinking(Widget):
+    def __init__(self, note):
+        self.note = note
+
+        self.icon = "brain-augemnted-symbolic"
+        self.name = "Thinking"
+
+        super().__init__()
+
+
+        self.output_view = Gtk.TextView()
+        self.output_view.set_editable(False)
+        self.output_view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        self.output_view.set_css_classes(["monospace"])
+        self.output_buffer = self.output_view.get_buffer()
+
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_child(self.output_view)
+        scrolled_window.set_vexpand(True)
+        self.details_box.append(scrolled_window)
+
+    def run(self):
+        self.output_buffer.set_text(str(self.note))
+
+
+
 tools = {
     "python": ToolPython,
+    "thinking": ToolThinking,
     "memory": ToolMemory,
     "urlTextExtractor": ToolURLTextExtractor,
-    "runSimpleChat": ToolRunBasicChat
+    "runSimpleChat": ToolRunBasicChat,
 }

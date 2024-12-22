@@ -35,6 +35,7 @@ wienere_sources = [
   'managers.py',
   'control.py',
   'widgets.py',
+  'record.py'
 ]
 
 install_data(wienere_sources, install_dir: moduledir)

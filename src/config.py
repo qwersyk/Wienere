@@ -170,7 +170,7 @@ class ConfigWindow(Adw.PreferencesWindow):
 
         dialog.type_combo = Adw.ComboRow(title=_("Type"))
         if category == "tools":
-            types=["python", "memory", "urlTextExtractor", "runSimpleChat"]
+            types=["python", "memory", "urlTextExtractor", "runSimpleChat", "thinking"]
 
         else:
             types=["tool", "simple", "vision"]

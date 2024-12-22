@@ -15,5 +15,6 @@ symbolic_dir = join_paths(get_option('datadir'), 'icons/hicolor/symbolic/apps')
 
 install_data (
     'paper-plane-symbolic.svg',
+    'brain-augemnted-symbolic.svg',
     install_dir: symbolic_dir
 )

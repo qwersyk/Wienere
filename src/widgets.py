@@ -47,7 +47,15 @@ class FileOnPanel(Adw.Bin):
     def convert_path(self):
         try:
             with open(self.file, "rb") as image_file:
-                self.file = "data:image/jpeg;base64,"+base64.b64encode(image_file.read()).decode('utf-8')
+                image_data = base64.b64encode(image_file.read()).decode('utf-8')
+                image_type = self.file.rsplit('.', 1)[-1] if '.' in self.file else ''
+
+
+                if image_type == 'mp4':
+                    self.file = f"data:video/mp4;base64,{image_data}"
+                else:
+                    self.file = f"data:image/{image_type};base64,{image_data}"
+
         except Exception as e:
             print(f"Error encoding image: {str(e)}")
             self.file = None

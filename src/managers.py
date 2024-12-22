@@ -215,30 +215,31 @@ class VisionChatManager(BaseChatManager):
     def send_message(self, message, images=None):
 
         exec_id = self.execution_control.start_new()
+        if True:
+            with self.lock:
+                self.messages.append({
+                    "role": "user",
+                    "content": [
+                                   {
+                                       "type": "text",
+                                       "text": message
+                                   },
 
-        # with self.lock:
-        #     self.messages.append({
-        #         "role": "user",
-        #         "content": [
-        #                        {
-        #                            "type": "text",
-        #                            "text": message
-        #                        },
-        #
-        #                    ] + [{
-        #             "type": "image_url",
-        #             "image_url": {
-        #                 "url": str(image)
-        #             }
-        #         } for image in images],
-        #     })
-        # args = (exec_id,)
-        with self.lock:
-            self.messages.append({
-                "role": "user",
-                "content": message,
-            })
-        args = (exec_id, images)
+                               ] + [{
+                        "type": "image_url",
+                        "image_url": {
+                            "url": str(image)
+                        }
+                    } for image in images],
+                })
+            args = (exec_id,)
+        else:
+            with self.lock:
+                self.messages.append({
+                    "role": "user",
+                    "content": message,
+                })
+            args = (exec_id, images)
         self.active_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.process_message(*args)
         return self.active_page
